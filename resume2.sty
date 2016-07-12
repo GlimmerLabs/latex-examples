@@ -1,0 +1,103 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{peer-educator}
+[2016/07/10 v0.1 Various Peer Educator Things]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Imported Packages
+
+% Permit hyperlinks in the document.
+\RequirePackage[hidelinks]{hyperref}
+
+% Use colors.  See 
+%   http://mirrors.rit.edu/CTAN/macros/latex/contrib/xcolor/xcolor.pdf
+\RequirePackage{xcolor}
+
+% Conditionals!
+\RequirePackage{xifthen}
+
+% Allow fonts
+\RequirePackage{fontspec}
+
+% Change the margins.
+\RequirePackage{geometry}
+\geometry{left=0.75in, top=1in, right=1in, bottom=0.75in}
+
+% Update lists
+\RequirePackage{enumitem}
+\setlist[itemize]{itemsep=0.1em}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Some helpful settings you may want to change
+
+% The font family (requires XeLaTeX)
+\setmainfont{Optima}
+
+% The primary color of text
+\definecolor{text}{HTML}{101010}
+
+% Highlights
+\definecolor{highlight}{HTML}{0000A0}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Additional configuration
+
+% No page numbers
+\pagestyle{empty}
+
+% Use the text color by default
+\color{text}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Misc. useful macros
+\newcommand*{\ifempty}[3]{\ifthenelse{\isempty{#1}}{#2}{#3}}
+\newcommand*{\ifnonempty}[2]{\ifempty{#1}{}{#2}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Instructions for setting basic values
+
+\newcommand*{\name}[1]{\def\@name{#1}}
+\newcommand*{\email}[1]{\def\@email{#1}}
+\newcommand*{\address}[1]{\def\@address{#1}}
+\newcommand*{\additional}[1]{\def\@additional{#1}}
+\newcommand*{\city}[1]{\def\@city{#1}}
+\newcommand*{\state}[1]{\def\@state{#1}}
+\newcommand*{\zip}[1]{\def\@zip{#1}}
+\newcommand*{\phone}[1]{\def\@phone{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Building resumes
+
+\newcommand*{\cvheader}[0]{%
+  \begin{flushleft}
+  {\Large\textcolor{highlight}{\textbf{\textsl{\@name}}}} \\
+  \fontsize{12pt}{1em}
+  \@address \hfill \@email \\
+  \@city, \@state \ \@zip \hfill \@phone \\
+  \vspace{0.1in}
+  \end{flushleft}}
+
+\newcommand{\cvsection}[1]{%
+  \begin{center}
+  \large\textcolor{highlight}{\textbf{#1}}
+  \vspace{-2mm}
+  \end{center}
+}
+
+\newenvironment{cventries}{
+  \begin{flushleft}
+}{%
+  \end{flushleft}
+}
+
+% \cventry{position}{date}{organization}{location}{notes}
+\newcommand{\cventry}[5]{%
+  \vspace{2mm}
+  \textcolor{highlight}{\textbf{#1}} \hfill \textsl{#2} \\
+  \ifnonempty{#3}
+    {#3\ifnonempty{#4}{\hfill \textsl{#4}} \\}
+  \ifnonempty{#5}{
+    \begin{itemize}[leftmargin=0.25in, rightmargin=0.25in, nosep, noitemsep]
+    #5
+    \end{itemize}}
+   
+}
